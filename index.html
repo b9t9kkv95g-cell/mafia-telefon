@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Панель Ведущего</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="top-bar">
+            <div class="header-content">
+                <div class="game-title">
+                    <h2><i class="fas fa-user-secret"></i> Mafia Elysium</h2>
+                </div>
+                <div class="timer-section">
+                    <div class="timer-display" id="timer">01:00</div>
+                    <div class="timer-controls">
+                        <button id="btn-start" class="btn-icon"><i class="fas fa-play"></i></button>
+                        <button id="btn-pause" class="btn-icon"><i class="fas fa-pause"></i></button>
+                        <button id="btn-reset" class="btn-icon"><i class="fas fa-undo"></i></button>
+                        <button id="btn-set130" class="btn-icon">1:30</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN TABS -->
+        <div class="tab-container">
+            <button class="tab-btn active" data-tab="players"><i class="fas fa-users"></i> Игроки</button>
+            <button class="tab-btn" data-tab="voting"><i class="fas fa-vote-yea"></i> Голосование</button>
+            <button class="tab-btn" data-tab="night"><i class="fas fa-moon"></i> Ночь</button>
+            <button class="tab-btn" data-tab="notes"><i class="fas fa-sticky-note"></i> Заметки</button>
+        </div>
+
+        <!-- PLAYERS TAB -->
+        <section class="tab-content active" id="players-tab">
+            <div class="mobile-header">
+                <h3><i class="fas fa-users"></i> Игроки</h3>
+                <button id="btn-shuffle" class="btn-small-mobile"><i class="fas fa-random"></i> Шафл</button>
+            </div>
+            <div class="players-container">
+                <div class="players-list" id="players-list"></div>
+            </div>
+        </section>
+
+        <!-- VOTING TAB -->
+        <section class="tab-content" id="voting-tab">
+            <div class="mobile-header">
+                <h3><i class="fas fa-vote-yea"></i> Голосование</h3>
+                <button class="btn-clear" onclick="clearVoting()"><i class="fas fa-trash"></i> Очистить</button>
+            </div>
+            
+            <div class="voting-order-display" id="voting-order-display">
+                <span class="hint">Нажмите на номера игроков ниже</span>
+            </div>
+            
+            <div class="voting-buttons-grid">
+                <div class="voting-numbers">
+                    <button class="vote-num-btn" onclick="toggleCandidate(1)">1</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(2)">2</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(3)">3</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(4)">4</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(5)">5</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(6)">6</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(7)">7</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(8)">8</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(9)">9</button>
+                    <button class="vote-num-btn" onclick="toggleCandidate(10)">10</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NIGHT TAB -->
+        <section class="tab-content" id="night-tab">
+            <div class="mobile-header">
+                <h3><i class="fas fa-moon"></i> Ночные действия</h3>
+            </div>
+            
+            <div class="night-actions">
+                <div class="night-action-card mafia">
+                    <div class="night-action-header">
+                        <i class="fas fa-crosshairs"></i>
+                        <span>Мафия</span>
+                    </div>
+                    <select id="action-mafia" class="night-select">
+                        <option value="">- Выберите игрока -</option>
+                    </select>
+                </div>
+                
+                <div class="night-action-card don">
+                    <div class="night-action-header">
+                        <i class="fas fa-chess-king"></i>
+                        <span>Дон</span>
+                    </div>
+                    <select id="action-don" class="night-select">
+                        <option value="">- Выберите игрока -</option>
+                    </select>
+                </div>
+                
+                <div class="night-action-card sheriff">
+                    <div class="night-action-header">
+                        <i class="fas fa-star"></i>
+                        <span>Шериф</span>
+                    </div>
+                    <select id="action-sheriff" class="night-select">
+                        <option value="">- Выберите игрока -</option>
+                    </select>
+                </div>
+                
+                <div class="night-action-card doc">
+                    <div class="night-action-header">
+                        <i class="fas fa-briefcase-medical"></i>
+                        <span>Доктор</span>
+                    </div>
+                    <select id="action-doc" class="night-select">
+                        <option value="">- Выберите игрока -</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="btn-process-night" class="btn-action">
+                <i class="fas fa-play-circle"></i> Применить ночь
+            </button>
+            
+            <div class="night-result" id="night-result">
+                <div class="result-header">
+                    <i class="fas fa-history"></i> Результат
+                </div>
+                <div class="result-text">Ночь не проведена</div>
+            </div>
+        </section>
+
+        <!-- NOTES TAB -->
+        <section class="tab-content" id="notes-tab">
+            <div class="mobile-header">
+                <h3><i class="fas fa-sticky-note"></i> Заметки</h3>
+                <button class="btn-clear" onclick="clearNotes()"><i class="fas fa-trash"></i> Очистить</button>
+            </div>
+            
+            <div class="notes-container">
+                <textarea id="game-notes" placeholder="Ваши заметки о ходе игры..."></textarea>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="addNote('👮 День начался')">
+                    <i class="fas fa-sun"></i> День
+                </button>
+                <button class="quick-btn" onclick="addNote('🌙 Ночь наступила')">
+                    <i class="fas fa-moon"></i> Ночь
+                </button>
+                <button class="quick-btn" onclick="addNote('💬 Обсуждение')">
+                    <i class="fas fa-comments"></i> Обсуждение
+                </button>
+                <button class="quick-btn" onclick="addNote('⚠️ Спорный момент')">
+                    <i class="fas fa-exclamation-triangle"></i> Спор
+                </button>
+            </div>
+        </section>
+
+        <!-- BOTTOM CONTROLS -->
+        <footer class="bottom-controls">
+            <button class="footer-btn restart-btn" id="btn-restart-legacy">
+                <i class="fas fa-redo"></i> Сбросить игру
+            </button>
+        </footer>
+    </div>
+
+    <!-- Аудио для сигнала таймера -->
+    <audio id="timer-beep" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="app.js"></script>
+</body>
+</html>
